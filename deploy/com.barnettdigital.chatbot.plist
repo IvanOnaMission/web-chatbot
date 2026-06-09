@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd agent — keeps the chatbot running on the Mac Mini and restarts it on
+  crash or reboot. EDIT the two paths below to the real repo location, then:
+    cp deploy/com.barnettdigital.chatbot.plist ~/Library/LaunchAgents/
+    launchctl load  ~/Library/LaunchAgents/com.barnettdigital.chatbot.plist
+    launchctl start com.barnettdigital.chatbot
+  Logs: /tmp/chatbot.out / /tmp/chatbot.err
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>            <string>com.barnettdigital.chatbot</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/REPLACE_ME/web-chatbot/deploy/start.sh</string>
+  </array>
+  <key>WorkingDirectory</key> <string>/Users/REPLACE_ME/web-chatbot</string>
+  <key>RunAtLoad</key>        <true/>
+  <key>KeepAlive</key>        <true/>
+  <key>StandardOutPath</key>  <string>/tmp/chatbot.out</string>
+  <key>StandardErrorPath</key><string>/tmp/chatbot.err</string>
+</dict>
+</plist>

@@ -1,0 +1,11 @@
+# Cloudflare Tunnel config for the TCCO chatbot on the Mac Mini.
+# Put this at ~/.cloudflared/config.yml after `cloudflared tunnel create tcco-chatbot`.
+# Replace <TUNNEL_ID> with the id that command prints (also the credentials filename).
+
+tunnel: <TUNNEL_ID>
+credentials-file: /Users/REPLACE_ME/.cloudflared/<TUNNEL_ID>.json
+
+ingress:
+  - hostname: chat.tcco.co.nz
+    service: http://localhost:8000
+  - service: http_status:404

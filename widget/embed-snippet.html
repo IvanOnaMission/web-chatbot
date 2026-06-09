@@ -1,0 +1,16 @@
+<!--
+  Website chatbot — embed snippet.
+
+  Drop this into the site footer (WordPress: "Insert Headers and Footers" plugin → Footer,
+  or Appearance → Theme File Editor → footer.php). One block, nothing else needed.
+
+  Host chat-widget.js on our own domain (serve this repo's widget/chat-widget.js) — it's
+  our own code, zero dependencies. Point `url` at the deployed /chat backend.
+-->
+<script src="https://chat.tcco.co.nz/chat-widget.js"></script>
+<chat-widget
+  url="https://chat.tcco.co.nz/chat"
+  title="The Conduction Company"
+  greeting="Hi 👋 TCCO here — Auckland electrical. Got a question or after a quote? I can help or get the team to call you back."
+  accent="#0e2a47"
+></chat-widget>

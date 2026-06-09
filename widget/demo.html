@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo — Website Chatbot</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, system-ui, sans-serif; color: #1a1a1a; }
+    .hero { background: #11161d; color: #fff; padding: 80px 24px; text-align: center; }
+    .hero h1 { font-size: 40px; margin: 0 0 12px; }
+    .hero p { font-size: 18px; opacity: .8; margin: 0; }
+    .body { max-width: 720px; margin: 0 auto; padding: 48px 24px; line-height: 1.6; }
+    .note { background: #fff8e6; border: 1px solid #ffe08a; padding: 12px 16px; border-radius: 8px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Your Business</h1>
+    <p>Demo page — the chat bubble is bottom-right. This is what you screen-record.</p>
+  </div>
+  <div class="body">
+    <p class="note">Set the <code>url</code> below to your running backend
+      (<code>http://localhost:8000/chat</code> locally, or the deployed URL). Open the
+      bubble, ask a few questions, then run a "I'd like a quote" conversation to show a
+      lead getting captured.</p>
+  </div>
+
+  <!-- The widget -->
+  <script src="./chat-widget.js"></script>
+  <chat-widget
+    url="http://localhost:8000/chat"
+    title="Leck Electrical"
+    greeting="Hey 👋 Leck Electrical here — got a sparky job or a question? I can help or get Bryce to call you back."
+    accent="#1f6feb"
+  ></chat-widget>
+</body>
+</html>
