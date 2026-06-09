@@ -4,10 +4,12 @@
  *
  * Attributes:
  *   url        (required) backend /chat endpoint
- *   agent      assistant name shown in the header + avatar (e.g. "Dan")
+ *   agent      assistant name shown in the header (e.g. "Dan")
  *   business   business name shown as the subtitle
+ *   avatar     image URL for the assistant's photo (falls back to a monogram)
  *   greeting   first message the bot shows
- *   accent     brand colour (default #0e2a47)
+ *   accent     brand colour for buttons/bubbles (default #ed5521)
+ *   header     header bar colour (defaults to accent)
  *   placeholder input placeholder
  */
 (function () {
@@ -20,22 +22,33 @@
       this.url = this.getAttribute("url");
       this.agent = this.getAttribute("agent") || "Assistant";
       this.business = this.getAttribute("business") || this.getAttribute("title") || "";
+      this.avatar = this.getAttribute("avatar") || "";
       this.greeting = this.getAttribute("greeting") ||
         "Hi 👋 — got a question or after a quote? I can help.";
-      this.accent = this.getAttribute("accent") || "#0e2a47";
+      this.accent = this.getAttribute("accent") || "#ed5521";
+      this.header = this.getAttribute("header") || this.accent;
       this.placeholder = this.getAttribute("placeholder") || "Write a message…";
+      this.initial = (this.agent.trim()[0] || "•").toUpperCase();
       this.threadId = null;
       this.open = false;
       this.greeted = false;
       this.render();
     }
 
+    // avatar markup: photo if given (with monogram fallback on load error), else monogram
+    avatarHTML(cls) {
+      if (this.avatar) {
+        return `<span class="${cls}"><img src="${this.avatar}" alt="${this.agent}"
+          onerror="this.parentNode.textContent='${this.initial}'"/></span>`;
+      }
+      return `<span class="${cls}">${this.initial}</span>`;
+    }
+
     render() {
       const root = this.attachShadow({ mode: "open" });
-      const initial = (this.agent.trim()[0] || "•").toUpperCase();
       root.innerHTML = `
         <style>
-          :host { --accent: ${this.accent}; all: initial; }
+          :host { --accent: ${this.accent}; --header: ${this.header}; all: initial; }
           *, *::before, *::after { box-sizing: border-box;
             font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
@@ -48,7 +61,6 @@
           }
           .launcher:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 10px 26px rgba(15,23,42,.32); }
           .launcher:active { transform: scale(.96); }
-          .launcher svg { transition: transform .2s ease; }
 
           .panel {
             position: fixed; bottom: 92px; right: 24px; z-index: 2147483000;
@@ -62,10 +74,11 @@
           }
           .panel.open { opacity: 1; transform: none; pointer-events: auto; }
 
-          .head { background: var(--accent); color: #fff; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
-          .avatar { width: 38px; height: 38px; border-radius: 50%; flex: none;
+          .head { background: var(--header); color: #fff; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+          .avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; overflow: hidden;
             background: rgba(255,255,255,.16); display: grid; place-items: center;
-            font-weight: 600; font-size: 16px; letter-spacing: .2px; }
+            font-weight: 600; font-size: 16px; }
+          .avatar img, .ava-sm img { width: 100%; height: 100%; object-fit: cover; display: block; }
           .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
           .who .name { font-weight: 600; font-size: 15px; }
           .who .sub { font-size: 12px; opacity: .82; display: flex; align-items: center; gap: 6px; }
@@ -80,14 +93,14 @@
           .row { display: flex; gap: 8px; align-items: flex-end; max-width: 86%; animation: rise .26s ease both; }
           .row.bot { align-self: flex-start; }
           .row.me { align-self: flex-end; flex-direction: row-reverse; }
-          .ava-sm { width: 26px; height: 26px; border-radius: 50%; flex: none; background: var(--accent);
+          .ava-sm { width: 28px; height: 28px; border-radius: 50%; flex: none; overflow: hidden; background: var(--accent);
             color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; }
           .bubble { padding: 10px 13px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; }
           .bot .bubble { background: #fff; color: #1c2430; border: 1px solid #e9ecf1; border-radius: 14px 14px 14px 4px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
           .me .bubble { background: var(--accent); color: #fff; border-radius: 14px 14px 4px 14px; }
           @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-          .typing { display: flex; gap: 4px; padding: 12px 14px; background: #fff; border: 1px solid #e9ecf1; border-radius: 14px 14px 14px 4px; width: max-content; }
+          .typing { display: flex; gap: 4px; padding: 13px 14px; background: #fff; border: 1px solid #e9ecf1; border-radius: 14px 14px 14px 4px; width: max-content; }
           .typing span { width: 7px; height: 7px; border-radius: 50%; background: #b7c0cc; animation: blink 1.3s infinite both; }
           .typing span:nth-child(2) { animation-delay: .2s; }
           .typing span:nth-child(3) { animation-delay: .4s; }
@@ -95,10 +108,10 @@
 
           .foot { display: flex; align-items: center; gap: 8px; padding: 12px; border-top: 1px solid #eceef2; background: #fff; }
           .foot input { flex: 1; border: 1px solid #dde1e8; border-radius: 22px; padding: 11px 15px; font-size: 14px; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
-          .foot input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,42,71,.12); }
+          .foot input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
           .foot button { flex: none; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
             background: var(--accent); color: #fff; display: grid; place-items: center; transition: filter .15s ease, transform .12s ease; }
-          .foot button:hover { filter: brightness(1.12); }
+          .foot button:hover { filter: brightness(1.08); }
           .foot button:active { transform: scale(.92); }
           .foot button:disabled { opacity: .45; cursor: default; }
           .credit { text-align: center; font-size: 10.5px; color: #aab2bd; padding: 0 0 8px; background: #fff; letter-spacing: .2px; }
@@ -107,7 +120,7 @@
         <button class="launcher" aria-label="Open chat">${ICON_CHAT}</button>
         <div class="panel" role="dialog" aria-label="Chat">
           <div class="head">
-            <div class="avatar">${initial}</div>
+            ${this.avatarHTML("avatar")}
             <div class="who">
               <span class="name">${this.agent}</span>
               <span class="sub"><span class="dot"></span>${this.business || "Online"}</span>
@@ -128,7 +141,6 @@
       this.$input = root.querySelector("input");
       this.$send = root.querySelector(".send");
       this.$x = root.querySelector(".x");
-      this._initial = initial;
 
       this.$launcher.addEventListener("click", () => this.toggle());
       this.$x.addEventListener("click", () => this.toggle());
@@ -148,9 +160,9 @@
       const row = document.createElement("div");
       row.className = "row " + (who === "me" ? "me" : "bot");
       if (who === "bot") {
-        const a = document.createElement("div");
-        a.className = "ava-sm"; a.textContent = this._initial;
-        row.appendChild(a);
+        const wrap = document.createElement("template");
+        wrap.innerHTML = this.avatarHTML("ava-sm");
+        row.appendChild(wrap.content.firstChild);
       }
       const b = document.createElement("div");
       b.className = "bubble"; b.textContent = text;
@@ -168,7 +180,7 @@
 
       const typing = document.createElement("div");
       typing.className = "row bot";
-      typing.innerHTML = `<div class="ava-sm">${this._initial}</div><div class="typing"><span></span><span></span><span></span></div>`;
+      typing.innerHTML = `${this.avatarHTML("ava-sm")}<div class="typing"><span></span><span></span><span></span></div>`;
       this.$log.appendChild(typing);
       this.$log.scrollTop = this.$log.scrollHeight;
 
