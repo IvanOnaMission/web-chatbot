@@ -1,0 +1,24 @@
+# systemd unit — keeps the bot running + restarts on crash/reboot.
+# One unit per hosted client. For a second client: copy to chatbot-<name>.service,
+# change WorkingDirectory (its own clone) and the --port.
+#
+# Install:
+#   sudo cp deploy/droplet/chatbot.service /etc/systemd/system/chatbot.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now chatbot
+#   sudo systemctl status chatbot     # check it's running
+#   journalctl -u chatbot -f          # logs
+
+[Unit]
+Description=Barnett Digital website chatbot (Leck)
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/web-chatbot
+ExecStart=/opt/web-chatbot/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

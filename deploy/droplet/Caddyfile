@@ -1,0 +1,14 @@
+# Caddy reverse proxy — gives the bot automatic HTTPS (Let's Encrypt).
+# Put this at /etc/caddy/Caddyfile, then: systemctl reload caddy
+# Requires: chat.barnettdigital.co A-record → this droplet's IP (port 80+443 open).
+#
+# One block per hosted client. Each client = its own backend port (see systemd unit).
+
+chat.barnettdigital.co {
+    reverse_proxy localhost:8000
+}
+
+# Add more hosted clients like this:
+# chat.<client>.barnettdigital.co {
+#     reverse_proxy localhost:8001
+# }
