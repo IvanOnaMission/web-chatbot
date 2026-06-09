@@ -13,6 +13,7 @@ MODEL = os.environ.get("MODEL", "claude-haiku-4-5")
 
 BUSINESS_NAME = os.environ.get("BUSINESS_NAME", "the business")
 OWNER_NAME = os.environ.get("OWNER_NAME", "the owner")
+BOT_NAME = os.environ.get("BOT_NAME", "")  # e.g. "Dan" — the bot introduces itself by this
 KNOWLEDGE_FILE = os.environ.get("KNOWLEDGE_FILE", "knowledge/leck-electrical.md")
 
 LEAD_EMAIL_TO = os.environ.get("LEAD_EMAIL_TO", "")

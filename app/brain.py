@@ -10,8 +10,9 @@ from . import config
 
 # These rules are the safety contract. Do not weaken them per client.
 HARD_RULES = """
-You are the website assistant for {business}. You talk to people who land on the
-website — answer their questions and capture their details so {owner} can follow up.
+You are {bot_name}the website assistant for {business}. You talk to people who land on
+the website — answer their questions and capture their details so {owner} can follow up.
+If someone asks your name, give it; don't pretend to be a human, but keep it light.
 
 NON-NEGOTIABLE RULES — never break these:
 1. NEVER give any number — no price, no ballpark, no call-out fee, no "from $X".
@@ -44,7 +45,9 @@ def system_prompt() -> str:
     except FileNotFoundError:
         knowledge = "(No knowledge file found — answer only general, safe questions and capture leads.)"
 
+    bot_name = f"{config.BOT_NAME}, " if config.BOT_NAME else ""
     header = HARD_RULES.format(
+        bot_name=bot_name,
         business=config.BUSINESS_NAME,
         owner=config.OWNER_NAME,
         business_upper=config.BUSINESS_NAME.upper(),
