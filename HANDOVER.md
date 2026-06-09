@@ -3,6 +3,9 @@
 This repo is **Dan**, the website chatbot for The Conduction Company — answers questions
 and captures leads on tcco.co.nz, 24/7. Same Dan persona as the phone assistant.
 
+> **Easiest path:** open this folder in **Claude Code** on the Mac Mini and say *"set up Dan."*
+> Claude reads `CLAUDE.md` and walks the whole install with you. This doc is the human summary.
+
 Most of it's done. Below is everything we need **from Jordan** to flip it live. Most are
 quick confirms — we've pre-filled from the TCCO website.
 
