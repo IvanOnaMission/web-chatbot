@@ -8,12 +8,10 @@ quick confirms — we've pre-filled from the TCCO website.
 
 ---
 
-## 1. Confirm the knowledge (5 min) — `knowledge/tcco.md`
-We pulled services, Auckland suburbs, credentials, guarantee, reviews, and **drafted the
-common FAQ answers** from the site. Open `knowledge/tcco.md` and:
-- [ ] Fix anything wrong in the services / area / FAQ answers.
-- [ ] Add any questions customers ask that aren't there.
-- [ ] Answer the one flagged gap: **after-hours / emergency line** (if any).
+## 1. Tell Dan what to say (5 min) — `knowledge/FOR-JORDAN-fill-in.md`
+We pre-filled it from your website. **Open `knowledge/FOR-JORDAN-fill-in.md`**, fix anything
+wrong, fill the 👉 blanks, add anything missing. (Or voice-note the answers, or drop docs —
+price guides, your own FAQ — into the `knowledge/drop/` folder and we'll fold them in.)
 
 ## 2. Confirm the behaviour (already set — just nod)
 - [ ] Dan **never quotes a price** — always routes to "the team will get you a quote." OK?

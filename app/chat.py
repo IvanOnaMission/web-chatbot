@@ -27,13 +27,33 @@ CAPTURE_TOOL = {
 }
 
 
+# Keep cost bounded on long chats: only the most recent turns are sent each time.
+# (The system prompt + knowledge is cached separately — see cache_control below.)
+MAX_HISTORY = 20
+
+
+def _trim(messages: list) -> list:
+    """Cap history length; never start mid tool_use/tool_result exchange."""
+    if len(messages) <= MAX_HISTORY:
+        return messages
+    msgs = messages[-MAX_HISTORY:]
+    # drop leading messages until a clean user text turn (avoid orphaned tool_result)
+    while msgs and not (
+        msgs[0]["role"] == "user"
+        and not (isinstance(msgs[0].get("content"), list)
+                 and any(isinstance(b, dict) and b.get("type") == "tool_result" for b in msgs[0]["content"]))
+    ):
+        msgs.pop(0)
+    return msgs
+
+
 def respond(history: list) -> tuple[str, list]:
     """Run one user turn through Claude, handling the capture tool.
 
     `history` is the full message list (user/assistant turns). Returns the
     assistant's reply text and the updated history to store for the thread.
     """
-    messages = list(history)
+    messages = _trim(list(history))
 
     while True:
         resp = client.messages.create(
