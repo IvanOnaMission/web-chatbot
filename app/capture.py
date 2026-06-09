@@ -4,11 +4,11 @@ This is the per-client routing layer. Defaults to email via SMTP and, if Twilio 
 configured, an SMS to the owner. If nothing is configured it logs the lead so it's
 never silently lost. Extend here to push into a job system (Katipult / Fergus / etc.).
 """
-import json
 import logging
 import smtplib
-import urllib.request
 from email.message import EmailMessage
+
+import httpx  # already installed (anthropic dep); uses certifi → no macOS SSL issues
 
 from . import config
 
@@ -19,23 +19,20 @@ def _send_email_resend(subject: str, body: str) -> bool:
     """Send via Resend's HTTP API. Recommended — just an API key, good deliverability."""
     if not (config.RESEND_API_KEY and config.LEAD_EMAIL_TO and config.EMAIL_FROM):
         return False
-    payload = json.dumps({
-        "from": config.EMAIL_FROM,
-        "to": [config.LEAD_EMAIL_TO],
-        "subject": subject,
-        "text": body,
-    }).encode()
-    req = urllib.request.Request(
+    resp = httpx.post(
         "https://api.resend.com/emails",
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {config.RESEND_API_KEY}",
-            "Content-Type": "application/json",
+        headers={"Authorization": f"Bearer {config.RESEND_API_KEY}"},
+        json={
+            "from": config.EMAIL_FROM,
+            "to": [config.LEAD_EMAIL_TO],
+            "subject": subject,
+            "text": body,
         },
-        method="POST",
+        timeout=15,
     )
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        return 200 <= resp.status < 300
+    if resp.status_code >= 400:
+        raise RuntimeError(f"Resend {resp.status_code}: {resp.text}")
+    return True
 
 
 def _send_email_smtp(subject: str, body: str) -> bool:
