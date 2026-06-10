@@ -26,15 +26,18 @@
       (it won't quote), then run an "I'd like a quote" chat to show a lead captured.</p>
   </div>
 
-  <script src="./chat-widget.js?v=3"></script>
+  <script src="./chat-widget.js?v=4"></script>
   <chat-widget
     url="http://localhost:8000/chat"
     agent="Leck Electrical"
     business="Auckland electricians"
     avatar="./leck-bot.png"
-    greeting="Hey 👋 Leck Electrical here — got a sparky job or a question? I can help, or get Bryce to call you back."
+    tagline="Typically replies instantly"
+    greeting="Hey 👋 Leck Electrical here — Auckland electricians. Got a sparky job or after a quote? Ask me anything, or I'll get Bryce to call you back."
+    prompts="Get a quote|Do you do EV chargers?|Do you cover my area?"
     accent="#d8a963"
     header="#1a1a1a"
+    header2="#d8a963"
   ></chat-widget>
 </body>
 </html>

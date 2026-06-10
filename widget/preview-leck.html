@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leck Electrical — Live Preview</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, system-ui, sans-serif; color: #1a1a1a; }
+    .hero { background: #1a1a1a; color: #fff; padding: 90px 24px; text-align: center; }
+    .hero h1 { font-size: 40px; margin: 0 0 10px; }
+    .hero .gold { color: #d8a963; }
+    .hero p { font-size: 17px; opacity: .8; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Leck <span class="gold">Electrical</span></h1>
+    <p>Live preview — chat bubble bottom-right (talking to the real bot).</p>
+  </div>
+
+  <!-- Same-origin: served from the droplet, talks to the droplet. -->
+  <script src="/chat-widget.js?v=4"></script>
+  <chat-widget
+    url="/chat"
+    agent="Leck Electrical"
+    business="Auckland electricians"
+    avatar="/assets/leck-bot.png"
+    tagline="Typically replies instantly"
+    greeting="Hey 👋 Leck Electrical here — Auckland electricians. Got a sparky job or after a quote? Ask me anything, or I'll get Bryce to call you back."
+    prompts="Get a quote|Do you do EV chargers?|Do you cover my area?"
+    accent="#d8a963"
+    header="#1a1a1a"
+    header2="#d8a963"
+  ></chat-widget>
+</body>
+</html>

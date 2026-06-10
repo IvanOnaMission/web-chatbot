@@ -25,15 +25,18 @@
       run an "I'd like a quote" chat to show a lead getting emailed.</p>
   </div>
 
-  <script src="./chat-widget.js?v=3"></script>
+  <script src="./chat-widget.js?v=4"></script>
   <chat-widget
     url="http://localhost:8000/chat"
     agent="Dan"
     business="The Conduction Company"
     avatar="./dan.jpg"
-    greeting="Hi 👋 I'm Dan from TCCO — Auckland electrical. Got a question or after a quote? I can help, or get the team to call you back."
+    tagline="Typically replies instantly"
+    greeting="Hi 👋 I'm Dan from TCCO — Auckland electrical. Got a question or after a quote? Ask me anything, or I'll get the team to call you back."
+    prompts="Get a quote|Do you do EV chargers?|Are you certified?"
     accent="#ed5521"
     header="#1a1a1a"
+    header2="#ed5521"
   ></chat-widget>
 </body>
 </html>

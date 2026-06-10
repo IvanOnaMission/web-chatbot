@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Barnett Digital — Live Preview</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, system-ui, sans-serif; color: #fff; background: #131418; }
+    .hero { padding: 100px 24px; text-align: center; }
+    .hero h1 { font-size: 42px; margin: 0 0 12px; }
+    .hero .o { color: #ff6b2c; }
+    .hero p { font-size: 18px; opacity: .8; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Barnett <span class="o">Digital</span></h1>
+    <p>Live preview — chat bubble bottom-right (talking to the real bot).</p>
+  </div>
+
+  <script src="/chat-widget.js?v=4"></script>
+  <chat-widget
+    url="/chat"
+    agent="Barnett Digital"
+    business="AI automation for trades"
+    tagline="Typically replies instantly"
+    greeting="Hey 👋 I help trade & local businesses claw back hours with AI — missed-call text-backs, quote chasing, content, the lot. Curious what we'd automate for you? Ask away, or book a free audit."
+    prompts="What could you automate for me?|Book a free audit|How does it work?"
+    accent="#ff6b2c"
+    header="#131418"
+    header2="#ff6b2c"
+  ></chat-widget>
+</body>
+</html>
