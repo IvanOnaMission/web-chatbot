@@ -1,0 +1,23 @@
+# systemd unit — Barnett Digital's own agency bot (2nd instance on the same droplet).
+# Shares the /opt/web-chatbot clone + venv; its config comes from .env.barnett, runs on port 8001.
+#
+# Install:
+#   sudo cp /opt/web-chatbot/deploy/droplet/chatbot-bd.service /etc/systemd/system/chatbot-bd.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now chatbot-bd
+#   sudo systemctl status chatbot-bd --no-pager
+
+[Unit]
+Description=Barnett Digital agency chatbot
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/web-chatbot
+EnvironmentFile=/opt/web-chatbot/.env.barnett
+ExecStart=/opt/web-chatbot/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8001
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

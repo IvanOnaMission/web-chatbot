@@ -4,11 +4,17 @@
 #
 # One block per hosted client. Each client = its own backend port (see systemd unit).
 
+# Leck Electrical (Bryce) — port 8000
 chat.barnettdigital.co {
     reverse_proxy localhost:8000
 }
 
+# Barnett Digital's own agency bot — port 8001
+chat-bd.barnettdigital.co {
+    reverse_proxy localhost:8001
+}
+
 # Add more hosted clients like this:
 # chat.<client>.barnettdigital.co {
-#     reverse_proxy localhost:8001
+#     reverse_proxy localhost:8002
 # }
