@@ -72,9 +72,11 @@ or do it with his access. Then it's live.
 ---
 
 ## Adding the next hosted client later
-1. Add their knowledge file (`knowledge/<client>.md`) + their `embed-<client>.html`.
-2. Second clone (`/opt/<client>`) with its own `.env` (its `KNOWLEDGE_FILE`, `LEAD_EMAIL_TO`).
-3. Copy `chatbot.service` → `chatbot-<client>.service`, point `WorkingDirectory` at the clone
-   and `--port 8001` (bump per client). Enable it.
-4. Add a Caddy block: `chat.<client>.barnettdigital.co { reverse_proxy localhost:8001 }` → reload.
-One droplet, many clients.
+
+**To add a new client: run `scripts/add-client.sh` (on your Mac), then follow the printed runbook.**
+
+It scaffolds everything locally (knowledge file, fill-in, embed, INSTALL guide, gitignored
+`.env.<slug>`, `chatbot-<slug>.service` on the next free port, Caddy block) and prints the exact
+DigitalOcean-console commands to finish. All clients share the one `/opt/web-chatbot` clone + venv —
+each is just its own systemd service (own port + `.env.<slug>`) and Caddy block. One droplet, many
+clients. See `scripts/README.md` for details.
