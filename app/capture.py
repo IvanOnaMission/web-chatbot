@@ -68,7 +68,7 @@ def notify_lead(lead: dict) -> str:
     phone = lead.get("phone", "(no phone)")
     job = lead.get("job", "(no description)")
     email = lead.get("email", "")
-    suburb = lead.get("suburb", "")
+    address = lead.get("address", "")
     urgency = lead.get("urgency", "")
     contact_pref = lead.get("contact_pref", "")
 
@@ -81,7 +81,7 @@ def notify_lead(lead: dict) -> str:
         f"Phone:    {phone}\n"
         f"Email:    {email or NP}\n"
         f"Job:      {job}\n"
-        f"Suburb:   {suburb or NP}\n"
+        f"Address:  {address or NP}\n"
         f"Urgency:  {urgency or NP}\n"
         f"Contact:  {contact_pref or NP}\n"
     )

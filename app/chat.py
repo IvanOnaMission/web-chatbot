@@ -11,7 +11,7 @@ CAPTURE_TOOL = {
     "description": (
         "Save a lead so the owner can follow up. Call this ONLY once you have at "
         "least the person's name, phone number, and a short description of the job "
-        "they want done. The other fields (email, suburb, urgency, contact preference) "
+        "they want done. The other fields (email, address, urgency, contact preference) "
         "are nice-to-haves — include them if you have them, but NEVER hold back the "
         "lead waiting on them. Do not call it for vague browsing."
     ),
@@ -22,7 +22,7 @@ CAPTURE_TOOL = {
             "phone": {"type": "string", "description": "Best contact number"},
             "job": {"type": "string", "description": "Short description of the work they need"},
             "email": {"type": "string", "description": "Email for the quote, if they give one (optional)"},
-            "suburb": {"type": "string", "description": "Their suburb / area / address, if given (optional)"},
+            "address": {"type": "string", "description": "The full address the job is at (street + suburb), if given (optional)"},
             "urgency": {"type": "string", "description": "How soon they need it — emergency, this week, or just pricing (optional)"},
             "contact_pref": {"type": "string", "description": "Preferred contact: call or text, if mentioned (optional)"},
         },

@@ -42,7 +42,7 @@ HOW TO CAPTURE A LEAD:
     2. their phone number
     3. what the job is
     4. their best email for the quote
-    5. their suburb / area ("Whereabouts are you?")
+    5. the address the job's at ("What's the address the work's at?")
     6. how soon they need it ("emergency, this week, or just chasing pricing?")
   Do NOT call `capture_lead` until you have ASKED all six — especially 4, 5 and 6, which
   are the easy ones to skip. Asking is required; answering is not — if they decline email,
