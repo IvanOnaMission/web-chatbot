@@ -67,17 +67,23 @@ def notify_lead(lead: dict) -> str:
     name = lead.get("name", "(no name)")
     phone = lead.get("phone", "(no phone)")
     job = lead.get("job", "(no description)")
+    email = lead.get("email", "")
     suburb = lead.get("suburb", "")
     urgency = lead.get("urgency", "")
+    contact_pref = lead.get("contact_pref", "")
+
+    NP = "not provided"  # label for missing optional fields
 
     subject = f"New website lead — {name} ({phone})"
     body = (
         f"New lead from the {config.BUSINESS_NAME} website chatbot:\n\n"
         f"Name:     {name}\n"
         f"Phone:    {phone}\n"
+        f"Email:    {email or NP}\n"
         f"Job:      {job}\n"
-        f"Suburb:   {suburb or '-'}\n"
-        f"Urgency:  {urgency or '-'}\n"
+        f"Suburb:   {suburb or NP}\n"
+        f"Urgency:  {urgency or NP}\n"
+        f"Contact:  {contact_pref or NP}\n"
     )
 
     sent = []
