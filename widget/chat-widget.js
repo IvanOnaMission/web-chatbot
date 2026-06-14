@@ -15,9 +15,10 @@
  *   header     header colour start (defaults to accent)
  *   header2    header gradient end (defaults to accent)
  *   placeholder input placeholder
- *   teaser     proactive bubble copy that pops beside the launcher ~2s after load
- *              (default "👋 Send us a message — we're online!"). Dismissed/opened
- *              state is remembered for the session (sessionStorage).
+ *   teaser     proactive bubble copy that pops beside the launcher ~2s after load.
+ *              OPT-IN: only shows when this attribute is set on the tag (omit it and
+ *              there's no teaser). Dismissed/opened state is remembered for the
+ *              session (sessionStorage).
  *   teaser-timeout  ms before the teaser auto-closes after it appears (default 5000).
  *              Set to 0 / "off" to keep it up until dismissed. An auto-close does NOT
  *              suppress the teaser for the session (a timeout just means "not engaged
@@ -46,7 +47,10 @@
       this.header = this.getAttribute("header") || this.accent;
       this.header2 = this.getAttribute("header2") || this.accent;
       this.placeholder = this.getAttribute("placeholder") || "Write a message…";
-      this.teaser = this.getAttribute("teaser") || "👋 Send us a message — we're online!";
+      // Opt-in: the teaser only shows when the `teaser` attribute is explicitly set on the tag.
+      // No attribute = no teaser (so instances that don't ask for it — TCCO/Dan, Barnett Digital —
+      // are unaffected even though they share this widget). An empty value also disables it.
+      this.teaser = this.hasAttribute("teaser") ? this.getAttribute("teaser") : "";
       // How long the teaser lingers before tucking away (ms). 0 / "off" = stay until dismissed.
       this.teaserTimeout = (() => {
         const raw = this.getAttribute("teaser-timeout");

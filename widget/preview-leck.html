@@ -19,18 +19,20 @@
   </div>
 
   <!-- Same-origin: served from the droplet, talks to the droplet. -->
-  <script src="/chat-widget.js?v=4"></script>
+  <script src="/chat-widget.js?v=5"></script>
   <chat-widget
     url="/chat"
     agent="Leck Electrical"
     business="Auckland electricians"
-    avatar="/assets/leck-bot.png"
+    avatar="/assets/leck-logo.png"
     tagline="Typically replies instantly"
     greeting="Hey 👋 Leck Electrical here — Auckland electricians. Got a sparky job or after a quote? Ask me anything, or I'll get Bryce to call you back."
-    prompts="Get a quote|Do you do EV chargers?|Do you cover my area?"
+    prompts="Get a quote|Do you do EV chargers?|Switchboard upgrade?|Do you cover my area?"
     accent="#d8a963"
     header="#1a1a1a"
     header2="#d8a963"
+    teaser="👋 Send us a message — we're online!"
+    teaser-timeout="5000"
   ></chat-widget>
 </body>
 </html>
