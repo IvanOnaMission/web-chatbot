@@ -1,28 +1,55 @@
 /*
- * Website lead-capture chat widget — self-contained, zero dependencies.
- * Intercom-style premium look: gradient header, status line, tappable suggested
- * questions, proactive teaser bubble, typing dots, spring animations.
+ * ============================================================================
+ * BRAND-NEUTRAL CHAT WIDGET TEMPLATE — canonical base for new client widgets.
+ * ============================================================================
+ * Self-contained, zero dependencies, premium Intercom-style look: gradient
+ * header, status line, tappable suggested questions, proactive teaser bubble,
+ * typing dots, spring animations, reduced-motion support.
  *
- * Attributes:
- *   url        (required) backend /chat endpoint
- *   agent      assistant name shown in the header
- *   business   business name (header subtitle)
- *   avatar     image URL for the assistant (falls back to a monogram)
- *   greeting   first message shown
- *   prompts    suggested questions, separated by | (tappable chips)
- *   tagline    header status line (default "Typically replies instantly")
- *   accent     brand colour for buttons/bubbles (default #ed5521)
- *   header     header colour start (defaults to accent)
- *   header2    header gradient end (defaults to accent)
- *   placeholder input placeholder
- *   teaser     proactive bubble copy that pops beside the launcher ~2s after load
- *              (default "👋 Send us a message — we're online!"). Dismissed/opened
- *              state is remembered for the session (sessionStorage).
- *   teaser-timeout  ms before the teaser auto-closes after it appears (default 5000).
- *              Set to 0 / "off" to keep it up until dismissed. An auto-close does NOT
- *              suppress the teaser for the session (a timeout just means "not engaged
- *              yet" — it can nudge again next page load); only an explicit × dismiss or
- *              opening the chat suppresses it. Hovering/focusing pauses the timer.
+ * This file has NO client branding baked in — every client-specific value is a
+ * neutral placeholder or sensible default, overridden purely by attributes on
+ * the <chat-widget> tag. To stand up a new client: copy this file (or just embed
+ * it as-is) and set the attributes below. Don't hardcode client colours/copy here.
+ *
+ * Embed (drop into the site footer):
+ *   <script src="https://YOUR-HOST/chat-widget.template.js"></script>
+ *   <chat-widget
+ *     url="https://YOUR-BACKEND/chat"
+ *     agent="Assistant"
+ *     business="Your Business"
+ *     accent="#2563eb">
+ *   </chat-widget>
+ *
+ * Backend contract:  POST {url}  { message, threadId }  ->  { message, threadId }
+ *
+ * ---------------------------------------------------------------------------
+ * ATTRIBUTES (all optional except `url`):
+ *   url          (REQUIRED) backend /chat endpoint
+ *   agent        assistant name in the header           (default "Assistant")
+ *   business     business name / header subtitle source (default "")
+ *   avatar       assistant image URL — logo or photo; falls back to a monogram
+ *                of the agent's first initial            (default none → monogram)
+ *   greeting     first bot message                       (default generic greeting)
+ *   prompts      suggested-question chips, "|"-separated (default none)
+ *   tagline      header status line                      (default "Typically replies instantly")
+ *   accent       brand colour — buttons/bubbles/launcher (default #2563eb, NEUTRAL slate-blue)
+ *   header       header gradient start                   (default = accent)
+ *   header2      header gradient end                     (default = accent)
+ *   placeholder  input placeholder                       (default "Write a message…")
+ *   teaser       proactive bubble copy popping ~2s after load beside the launcher
+ *                                                        (default "👋 Send us a message — we're online!")
+ *   teaser-timeout  ms before the teaser auto-closes after appearing (default 5000).
+ *                0 / "off" keeps it up until dismissed. Auto-close does NOT suppress
+ *                for the session (timeout = "not engaged yet", can nudge again next
+ *                page load); only an explicit × dismiss or opening the chat suppresses
+ *                it for the session (sessionStorage). Hover/focus pauses the timer.
+ *
+ * PLACEHOLDERS to replace per client (or just override via attributes — preferred):
+ *   - accent          → the client's brand colour (this file ships a NEUTRAL slate-blue #2563eb)
+ *   - agent/greeting  → client's assistant name + opening line
+ *   - avatar          → client's logo/photo URL (ships with NONE → monogram fallback)
+ *   - prompts         → client's top 2–3 questions
+ * ============================================================================
  */
 (function () {
   const ICON_CHAT = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
@@ -37,12 +64,12 @@
       this.url = this.getAttribute("url");
       this.agent = this.getAttribute("agent") || "Assistant";
       this.business = this.getAttribute("business") || this.getAttribute("title") || "";
-      this.avatar = this.getAttribute("avatar") || "";
+      this.avatar = this.getAttribute("avatar") || ""; // NEUTRAL: no avatar → monogram fallback
       this.greeting = this.getAttribute("greeting") ||
         "Hi 👋 — got a question or after a quote? I can help.";
       this.prompts = (this.getAttribute("prompts") || "").split("|").map(s => s.trim()).filter(Boolean);
       this.tagline = this.getAttribute("tagline") || "Typically replies instantly";
-      this.accent = this.getAttribute("accent") || "#ed5521";
+      this.accent = this.getAttribute("accent") || "#2563eb"; // NEUTRAL placeholder — slate-blue
       this.header = this.getAttribute("header") || this.accent;
       this.header2 = this.getAttribute("header2") || this.accent;
       this.placeholder = this.getAttribute("placeholder") || "Write a message…";
@@ -65,9 +92,9 @@
     }
 
     // Don't-nag: once a visitor dismisses the teaser (or opens the chat), remember it for the
-    // rest of the session. sessionStorage (not localStorage) chosen on purpose — it clears when
-    // the tab closes, so a returning visitor gets the nudge again on a fresh visit but isn't
-    // pestered on every page in the same session. Wrapped in try/catch for Safari private mode.
+    // rest of the session. sessionStorage (not localStorage) on purpose — clears on tab close,
+    // so a returning visitor gets the nudge again on a fresh visit but isn't pestered on every
+    // page in the same session. Wrapped in try/catch for Safari private mode.
     teaserDismissed() {
       try { return sessionStorage.getItem("cw-teaser-dismissed") === "1"; } catch (e) { return false; }
     }
